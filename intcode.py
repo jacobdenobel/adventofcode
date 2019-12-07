@@ -21,15 +21,19 @@ def get_pos(opcode, modes, i, mi=0):
     return opcode[mi + 1] if not modes[mi] else ((i + 1) + mi)
 
 
-def intcode_program(opcodes_org, inputs=None, silent=False):
+def intcode_program(opcodes_org, inputs=None):
     try:
-        next(intcode_generator(opcodes_org, inputs))
+        g = intcode_generator(opcodes_org, inputs)
+        next(g)
     except StopIteration as err:
         return err.value
+    else:
+        return g
 
 
-def intcode_generator(opcodes_org, inputs=None, parent_gen=None):
+def intcode_generator(opcodes_org, inputs=None):
     opcodes = opcodes_org[::]
+    name = inputs[0]
     i = 0
     output_value = opcodes[0]
     while i < len(opcodes):

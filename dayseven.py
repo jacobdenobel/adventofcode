@@ -7,16 +7,12 @@ def compute_thruster_input(intcodes, sequence):
     value = 0
     for phase in sequence:
         value = intcode_program(
-            intcodes, inputs=[phase, value], silent=True)
+            intcodes, inputs=[phase, value])
     return value
 
 
 def compute_feedback_thruster_input(intcodes, sequence):
-    def start_gen(intcodes, phase):
-        g = intcode_generator(intcodes, [phase])
-        next(g)
-        return g
-    amps = [start_gen(intcodes, s) for s in sequence]
+    amps = [intcode_program(intcodes, [phase]) for phase in sequence]
     value = 0
     done = False
     while not done:
