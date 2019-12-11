@@ -1,7 +1,8 @@
-
 from intcode import intcode_program
 
 if __name__ == "__main__":
     with open("inputdayfive.txt", "r") as f:
-        day_five = list(map(int, f.read().strip().split(",")))
-        intcode_program(day_five, verbose=True)
+        program = list(map(int, f.read().strip().split(",")))
+        print("task1:",  intcode_program(program, [1]))
+        print("task2:",  intcode_program(program, [5]))
+        
