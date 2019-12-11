@@ -50,6 +50,5 @@ if __name__ == "__main__":
             [i.strip() for i in x.split(",")] for x in f.readlines()
         ]
 
-    print("TASK1:", compute_distance(*wires))
-
-    print("TASK2:", compute_distance(*wires, return_steps=True))
+    assert compute_distance(*wires) == 1983
+    assert compute_distance(*wires, return_steps=True) == 107754 

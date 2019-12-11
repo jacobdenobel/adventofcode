@@ -72,8 +72,6 @@ if __name__ == "__main__":
         test_edges
     ) == 4
 
-    print(
-        compute_shortest_number_of_orbital_transfers(
+    assert compute_shortest_number_of_orbital_transfers(
             edges
-        )
-    )
+        ) == 436

@@ -11,5 +11,5 @@ while any(compute_fuels):
     compute_fuels = [ (f // 3) - 2  for f in compute_fuels]
     compute_fuels = list(filter(lambda x:x > 0, compute_fuels))
     total += sum(compute_fuels)
+assert total == 5039071
 
-print(total)

@@ -16,7 +16,7 @@ for number in range(*input_range):
             if len("".join(group)) == 2:
                 matches.append(number)
                 break
-           
-print(len(matches))
+
+assert len(matches) == 1102
 
 
