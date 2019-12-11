@@ -26,7 +26,7 @@ def intcode_generator(opcodes_org, verbose=False):
         if operation == 99: break
         n = 1 + (1 if operation in (3, 4, 9,) else (
             2 if operation in (5, 6,) else 3)
-            ) 
+        ) 
         p = get_positions(opcodes, instruction, i, rb, n)
         if operation == 4:
             output_values.append(opcodes[p[0]])
