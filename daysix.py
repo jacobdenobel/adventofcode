@@ -48,7 +48,7 @@ if __name__ == "__main__":
         ("K", "L"),
     ]
     assert count_orbits(test_edges) == 42
-    with open("inputdaysix.txt", 'r') as f:
+    with open("inputs/inputdaysix.txt", 'r') as f:
         edges = [x.strip().split(")") for x in f.readlines()]
         assert count_orbits(edges) == 344238
 

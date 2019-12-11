@@ -43,7 +43,7 @@ if __name__ == "__main__":
         [1, 0, 4, 3, 2]
     ) == 65210
 
-    with open("inputdayseven.txt", "r") as f:
+    with open("inputs/inputdayseven.txt", "r") as f:
         day_seven = list(map(int, f.read().strip().split(",")))
 
         max_value = max(compute_thruster_input(day_seven, p)

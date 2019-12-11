@@ -191,7 +191,7 @@ def test_task2():
 
 
 if __name__ == "__main__":
-    with open("inputdayten.txt", "r") as f:
+    with open("inputs/inputdayten.txt", "r") as f:
         grid = [x.strip() for x in f]
 
     station, n= task1(grid)

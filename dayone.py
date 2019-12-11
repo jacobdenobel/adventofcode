@@ -1,4 +1,4 @@
-with open("inputdayone.txt", "r") as f:
+with open("inputs/inputdayone.txt", "r") as f:
     lines = f.readlines()
 
 fuels = [ (int(i.strip()) // 3) - 2 for i in lines if i.strip().isdigit()]

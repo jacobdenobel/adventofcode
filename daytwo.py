@@ -3,7 +3,7 @@ from intcode import intcode_program
 
 
 if __name__ == "__main__":
-    with open("inputdaytwo.txt", "r") as f:
+    with open("inputs/inputdaytwo.txt", "r") as f:
         opcode_org = list(map(int, (f.read().split(","))))
 
     for noun, verb in permutations(range(0, 99), 2):

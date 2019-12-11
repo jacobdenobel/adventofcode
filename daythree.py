@@ -45,7 +45,7 @@ if __name__ == "__main__":
         ["U7", "R6", "D4", "L4"],
         return_steps=True
     ) == 30
-    with open("inputdaythree.txt") as f:
+    with open("inputs/inputdaythree.txt") as f:
         wires = [
             [i.strip() for i in x.split(",")] for x in f.readlines()
         ]

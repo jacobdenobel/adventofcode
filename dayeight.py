@@ -43,7 +43,7 @@ def part_two(data):
     return image
 
 if __name__ == '__main__':
-    with open("inputdayeight.txt", 'r') as f:
+    with open("inputs/inputdayeight.txt", 'r') as f:
         data = f.read().strip()
         answer = part_one(data)
         assert answer == 2904

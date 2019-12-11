@@ -39,7 +39,7 @@ def run_robot(program, start_color=0):
 
 
 if __name__ == "__main__":
-    with open("inputdayeleven.txt", "r") as f:
+    with open("inputs/inputdayeleven.txt", "r") as f:
         program = list(map(int,f.read().strip().split(',')))
     
     # task1 
