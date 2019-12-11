@@ -27,9 +27,9 @@ def get_pos(opcode, modes, i, rb, mi=0):
         return rb + opcode[mi + 1]
 
 
-def intcode_program(opcodes_org, inputs=None, verbose=True):
+def intcode_program(*args, **kwargs):
     try:
-        g = intcode_generator(opcodes_org, inputs, verbose=verbose)
+        g = intcode_generator(*args, **kwargs)
         next(g)
     except StopIteration as err:
         return err.value
@@ -41,7 +41,7 @@ def increase_memory(opcodes, new_index):
     return opcodes + ([0] * ((new_index + 1) - len(opcodes)))
 
 
-def intcode_generator(opcodes_org, inputs=None, verbose=True):
+def intcode_generator(opcodes_org, inputs=None, verbose=False):
     opcodes = opcodes_org[::]
     relative_base = 0
     i = 0

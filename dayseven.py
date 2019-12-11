@@ -18,7 +18,7 @@ def compute_feedback_thruster_input(intcodes, sequence):
     while not done:
         for amp in amps:
             try:
-                value = amp.send(value)
+                value = amp.send(value)[-1]
             except StopIteration as err:
                 value = err.value
                 done = True
