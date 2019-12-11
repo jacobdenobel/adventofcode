@@ -27,7 +27,7 @@ def get_pos(opcode, modes, i, rb, mi=0):
         return rb + opcode[mi + 1]
 
 
-def intcode_program(opcodes_org, inputs=None, verbose=False):
+def intcode_program(opcodes_org, inputs=None, verbose=True):
     try:
         g = intcode_generator(opcodes_org, inputs, verbose=verbose)
         next(g)
@@ -45,6 +45,7 @@ def intcode_generator(opcodes_org, inputs=None, verbose=True):
     opcodes = opcodes_org[::]
     relative_base = 0
     i = 0
+    output_values = []
     output_value = opcodes[0]
     while i < len(opcodes):
         operation, modes = get_opcode(opcodes[i])
@@ -60,13 +61,17 @@ def intcode_generator(opcodes_org, inputs=None, verbose=True):
                 opcodes = increase_memory(opcodes, p)
         if operation == 4:
             output_value = opcodes[p1]
+            output_values.append(output_value)
             if verbose:
                 print(output_value)
         elif operation == 3:
             if not inputs:
-                value = yield output_value
+                value = yield output_values
+                output_values = []
             else:
                 value = inputs.pop(0)
+            if verbose:
+                print("Got", value)
             opcodes[p1] = value
         elif operation in (1, 2, 7, 8,):
             opcodes[p3] = int({

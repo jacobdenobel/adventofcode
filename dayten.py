@@ -194,7 +194,7 @@ if __name__ == "__main__":
     with open("inputdayten.txt", "r") as f:
         grid = [x.strip() for x in f]
 
-    station = task1(grid)
+    station, n= task1(grid)
     task2(grid, [200], station)
     
         
