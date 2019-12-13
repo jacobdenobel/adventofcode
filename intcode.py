@@ -16,7 +16,7 @@ def get_positions(opcodes, instruction, i, rb, n):
     return list(map(inner, range(0, 3)))
 
 
-def intcode_generator(opcodes_org, verbose=False):
+def intcode_generator(opcodes_org, verbose=False, single=True):
     opcodes = opcodes_org.copy()
     rb, i  = 0, 0
     output_values = []
@@ -52,8 +52,9 @@ def intcode_generator(opcodes_org, verbose=False):
         else:
             raise NotImplementedError()
         i += n
-    return next(iter(output_values[::-1]), opcodes[0])
-
+    if single:
+        return next(iter(output_values[::-1]), opcodes[0])
+    return output_values
 
 def intcode_program(opcode, inputs=[], **kwargs):
     try:
