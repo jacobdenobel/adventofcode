@@ -93,7 +93,7 @@ if __name__ == "__main__":
         program = list(map(int, f.read().strip().split(",")))
    
     program[0] = 2
-    game = GridGame(program, cheat=True) 
+    game = GridGame(program, cheat=False) 
     game.play()  
         
 
