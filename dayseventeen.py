@@ -1,11 +1,9 @@
 import re
 from time import sleep
 from collections import defaultdict, deque, Counter
-from itertools import permutations
+from itertools import permutations, chain
 
 from intcode import intcode_program, intcode_generator
-
-
 
 class Robot:
     robot_ints = list(map(ord,"<>v^"))
@@ -17,21 +15,32 @@ class Robot:
         self.path = self.get_command_path()
         self.ngrams = self.compute_ngrams(self.path) 
         self.main, self.A, self.B, self.C = self.find_compression(
-                self.path, self.ngrams)
+                ''.join(self.path), self.ngrams)
 
-    def run(self, feed=True):
-        self.display()
-        feed = [ord('y') if feed else ord('n')] + [10]
+    def collect_dust(self, feed='n'):
+        if feed == 'y':
+            self.display()
+        am_dust = 0
+        len_grid = len(self.state) 
         for command in (self.main, self.A, self.B, self.C, feed,):
             for digit in self.make_ascii(command):
                 try:
                     self.state = self.program.send(digit)
                 except StopIteration as err:
-                    print("stop")
-                    self.state = err.value
-            breakpoint()
-            self.display()
-            sleep(1)
+                    am_dust = err.value[-1]
+                    self.state = err.value[:-1]
+                    break
+            if not am_dust and feed == 'y':
+                self.display()
+        if feed == 'y':       
+            states = ','.join(map(str,self.state)).split(",10,10")
+            for state in filter(None, states):
+                self.state = map(int, filter(None, state.split(",")))
+                self.display()
+                print()
+                print()
+                sleep(.5)
+        return am_dust
 
 
     def set_state(self):
@@ -90,7 +99,7 @@ class Robot:
             yield move[0], pos
 
     def get_command_path(self):
-        return ''.join(self.format_path(map(lambda x:x[0], self.traverse())))    
+        return self.format_path(map(lambda x:x[0], self.traverse()))    
 
     def format_path(self, command_path):
         command_path = list(command_path)
@@ -110,18 +119,14 @@ class Robot:
     
     def get_move(self, orientation, current_node, next_node):
         d = ['left', 'up', 'right', 'down']
-        try:
-            should_go = {
-                (0, -1): 'up',
-                (0,  1): 'down',
-                (1,  0): 'right',
-                (-1, 0): 'left'
-            }[(next_node[0] - current_node[0], next_node[1] - current_node[1],)]
-        except:
-            breakpoint()
+        should_go = {
+            (0, -1): 'up',
+            (0,  1): 'down',
+            (1,  0): 'right',
+            (-1, 0): 'left'
+        }[(next_node[0] - current_node[0], next_node[1] - current_node[1],)]
         if should_go == orientation:
             return should_go, ['X']
-        
 
         d = d[d.index(orientation)+1:] + d[:d.index(orientation)]
         n_right = 0
@@ -139,13 +144,14 @@ class Robot:
             return should_go, ['L'] * n_left
         return should_go, ['R'] * n_right
 
-    def compute_ngrams(self, path, check_strings=None):
-        check_strings = check_strings or [path]
+    def compute_ngrams(self, path):
+        check_string = ''.join(path)
         ngrams = Counter()
-        for i in range(6, 12):
+        for i in range(6, 10):
             for j in range(len(path)-i):
                 ngram = path[j:j+i]
-                ngrams[ngram] = sum((x.count(ngram) for x in check_strings))
+                ngram = ''.join(ngram)
+                ngrams[ngram] = check_string.count(ngram)
         return ngrams
 
     
@@ -170,21 +176,13 @@ class Robot:
             new_path = self.compress(path, A, B, C)
             if len(new_path) <= 11:
                 return new_path, A, B, C
-            if best > len(new_path):
-                np = new_path
-                best =len(new_path)
-                a,b,c = A,B,C
-        return np, a,b,c 
-        breakpoint()
         raise Exception("No compression found")
     
     def make_ascii(self, code):
-        ascii_code = []
-        for char in code:
-            ascii_code.extend([ord(char), ord(",")])
-        ascii_code[-1] = 10
-        return ascii_code
-
+        return map(ord, ','.join(chain.from_iterable(
+                ( [x] if x.isdigit() else list(x) for x in re.split('(\d+)', code))
+        )) + "\n")
+    
     def display(self):    
         for char in self.state:
             print(chr(char), end='')
@@ -203,7 +201,5 @@ if __name__ == "__main__":
     assert question1(program) == 7584
     program[0] = 2 
     robot = Robot(program)
-
-    # This should work
-    #robot.run()
+    assert robot.collect_dust() == 1016738
 
