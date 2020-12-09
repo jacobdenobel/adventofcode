@@ -1,0 +1,4 @@
+[submodule "2020\\compiler\\extern\\pybind11"]
+	path = 2020\\compiler\\extern\\pybind11
+	url = ../../pybind/pybind11
+	branch = stable
