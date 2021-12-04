@@ -27,7 +27,7 @@ class Board:
         return self.has_bingo
 
 
-with open("data/day5.txt") as f:
+with open("data/day4.txt") as f:
     numbers = map(int, next(f).strip().split(","))
     boards = []
     board  = []
