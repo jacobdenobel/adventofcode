@@ -8,7 +8,7 @@ epsilon_bin = ''
 ddata = [rdata[::], rdata[::]]
 
 for i, column in enumerate(list(zip(*rdata))):
-    k = int(sum(column) > 500)
+    k = int(sum(column) > (len(rdata) // 2)
     gamma_bin += str(k)
     epsilon_bin += str(abs(k -1))
 
