@@ -1,7 +1,6 @@
 class Board:
     def __init__(self, data):
         self.n = len(data)
-        self.data = data
         self.mask = [[0] * self.n for _ in range(self.n)]
         self.lookup = dict()
         self.unmarked_sum = 0.0
