@@ -1,6 +1,7 @@
 import functools
 import operator
 
+
 with open("data/day9.txt") as f:
     data = []
     for line in f:
@@ -19,7 +20,6 @@ def get_surrounding_points(i, j, n, m):
         surrounding_points.remove((0, 1))
     return [(i+p[0], j + p[1]) for p in surrounding_points]
 
-
 def get_low_points(data):
     n = len(data)
     m = len(data[0])
@@ -29,8 +29,6 @@ def get_low_points(data):
             value = data[i][j] 
             if all(data[p[0]][p[1]] > value for p in surrounding_points):
                 yield i, j, value 
-
-print("Q1:", sum(map(lambda x:x[2] + 1, get_low_points(data))))
 
 def get_basin(i, j, value, data):
     n = len(data)
@@ -48,13 +46,13 @@ def get_basin(i, j, value, data):
 
             if (ii, jj) not in seen and hp > h and hp != 9:
                 stack.append((ii, jj))
-    return len(seen) 
-
-basins = []
-for i, j, value in get_low_points(data):
-    basins.append(get_basin(i, j, value, data))
-
-print("Q2:", functools.reduce(operator.mul, sorted(basins, reverse=True)[:3], 1))
+    return len(seen)
 
 
+if __name__ == '__main__':
+    print("Q1:", sum(map(lambda x:x[2] + 1, get_low_points(data))))
+    basins = []
+    for i, j, value in get_low_points(data):
+        basins.append(get_basin(i, j, value, data))
 
+    print("Q2:", functools.reduce(operator.mul, sorted(basins, reverse=True)[:3], 1))
