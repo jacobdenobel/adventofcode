@@ -26,6 +26,7 @@ def dijkstra(grid, growth=1):
                 
                 g = (new_node[0] // nn) + (new_node[1] // mm)
                 dist = ((grid[new_node[0] % nn][new_node[1] % mm] + g) % 9) or 9
+                if new_node[0] == 100: breakpoint()
                 
                 alt = min_dist + dist
                 if alt < distance[new_node]:
