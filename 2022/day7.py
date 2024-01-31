@@ -20,23 +20,24 @@ class Directory:
             return self
 
         if to == "..":
-            if self.parent:
+            if self.parent is not None:
                 return self.parent
-            return self
 
         for d in self.children:
             if d.name == to:
                 return d
 
-         # I Don't know why this doesn't work
-        if to == "wgctf":
-            return self.cd("mqbbh").cd(to)
+        # I don't know why this is nescessary
+        for c in self.children:
+            for c2 in c.children:
+                if c2.name == to:
+                    return c2
 
     def display(self, tab=0, short=False):
         t = "  " * tab
         print(t, self.name, "(dir)", self.size)
         for c in self.children:
-            c.display(tab+1)
+            c.display(tab+1, short)
         if not short:
             for f in self.files:
                 print(t, "  -",  f)
@@ -46,6 +47,15 @@ class Directory:
         fsize = sum(f.size for f in self.files)
         dsize = sum(d.size for d in self.children)
         return fsize + dsize
+
+    @property
+    def path(self):
+        current = self
+        path = ""
+        while current is not None:
+            path = f"{current.name if current.name != '/' else ''}/{path}"
+            current = current.parent
+        return path
 
 
 class Callback:
@@ -85,9 +95,11 @@ if __name__ == "__main__":
         current = Directory("/")
         root = current
         for i, line in enumerate(f):
+            
             line = line.strip()
             if not line.startswith("$"):
                 pre, name = line.split()
+
                 if pre == "dir":
                     current.children.append(Directory(name, current))
                 else:
@@ -97,9 +109,9 @@ if __name__ == "__main__":
             if cmd == "cd":
                 current = current.cd(*param)
 
-        total     = 70_000_000
-        required  = 30_000_000
-        to_delete = required - (total - root.size)
-        results = bfs(root, [Q1Callback(), Q2Callback(to_delete)])
-        print("Q1", results[0].result)
-        print("Q2", results[1].result)  
+    total     = 70_000_000
+    required  = 30_000_000
+    to_delete = required - (total - root.size)
+    results = bfs(root, [Q1Callback(), Q2Callback(to_delete)])
+    print("Q1", results[0].result)
+    print("Q2", results[1].result)  
