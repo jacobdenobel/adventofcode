@@ -1,3 +1,4 @@
 #! /bin/bash
 
-gfortran $1 && ./a.out $2
+gfortran -c utils.f90
+gfortran $1 utils.o && ./a.out $2
