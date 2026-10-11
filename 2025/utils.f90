@@ -44,4 +44,24 @@ contains
       end do
 
    end subroutine print_matrix
+
+   function count_cols(aline, sep) result(n)
+    character, allocatable, intent(in) :: aline(:)
+    character(len=1), intent(in) :: sep
+    integer :: n, i
+    logical :: prev_space, has_data
+
+    prev_space = .TRUE.
+    n = 0
+    do i = 1, len_trim(aline)
+        has_data = aline(i) /= sep
+        if (has_data) then
+            if (prev_space) n = n + 1 
+            prev_space = .FALSE.
+            cycle
+        end if
+        prev_space = .TRUE.
+    end do       
+end function count_cols
+
 end module utils
